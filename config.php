@@ -4,6 +4,6 @@
 	define('PASS', "");
 	define('DB', "vps");
 	define('KEY', "666");
-	define('PA', "666");//Èç¹ûÉèÖÃÁËÃÜÂë£¬Ö»ÓÐÊäÈëÃÜÂëºó²ÅÄÜ¿´µ½
+	define('PA', "666");//å¦‚æžœè®¾ç½®äº†å¯†ç ï¼Œåªæœ‰è¾“å…¥å¯†ç åŽæ‰èƒ½çœ‹åˆ°
 	define('BASEPATH',dirname(dirname(__FILE__)));
 ?>
