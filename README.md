@@ -10,7 +10,7 @@ Branch master is a modified version
 If you logged into informaiton panel,you can find the usage of install.sh
 
 ## config.php
->define('USER', "root");//DATABASE USER
+>define('USER', "root");//DATABASE_USER
 
 >define('PASS', "");//DATABASE_PASS
 
