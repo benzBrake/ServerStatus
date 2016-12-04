@@ -9,14 +9,15 @@
 			$ip=trim($_SERVER['REMOTE_ADDR']);
 			$ram=$_POST['ram'];
 			$used=$_POST['used'];
+			$disk=round($_POST['disk'] * 100,0);
 			$uptime=$_POST['uptime'];
 			$load=$_POST['load'];
 			$valid=mysql_query("SELECT * FROM vps WHERE ip='".$ip."'");
 			$is_valid=mysql_num_rows($valid);
 			if(!$is_valid){
-				mysql_query("INSERT INTO vps(ip,ram,used,uptime,aload,atime) VALUES('".$ip."','".$ram."','".$used."','".$uptime."','".$load."','".$time."') ");
+				mysql_query("INSERT INTO vps(ip,ram,used,disk,uptime,aload,atime) VALUES('".$ip."','".$ram."','".$used."','".$disk."','".$uptime."','".$load."','".$time."') ");
 			}else{
-				mysql_query("UPDATE vps SET ram='".$ram."',used='".$used."',uptime='".$uptime."',aload='".$load."',atime='".$time."' WHERE ip='".$ip."'");
+				mysql_query("UPDATE vps SET ram='".$ram."',used='".$used."',disk='".$disk."',uptime='".$uptime."',aload='".$load."',atime='".$time."' WHERE ip='".$ip."'");
 			}
 		}else{
 			echo "error";
@@ -39,6 +40,9 @@
 			}
 			#addvps {
 				margin-bottom: 10px;
+			}
+			.progress-bar {
+				color:#000;
 			}
 		</style>
 	</head>
@@ -80,16 +84,16 @@
 ?>
 <div class="container">
 	<div id="addvps" class="input-group">
-		<span class="input-group-addon">添加服务器 $</span>
+		<span class="input-group-addon">Add Server $</span>
 		<input id="install_command" type="text" class="form-control" value="<?php echo 'wget -N --no-check-certificate http://'.$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"].'install.sh -O serverstatus_installer.sh && bash serverstatus_installer.sh http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].' '.KEY." && rm -f serverstatus_installer.sh"; ?>">
 	</div>
 	<table class="table table-striped">
 		<tr>
 			<th>ID</th>
 			<th>IP</th>
-			<th>Location</th>
-			<th>Memory</th>
-			<th>USED</th>
+			<th>LOCATION</th>
+			<th style="min-width: 150px">MEMORY</th>
+			<th style="min-width: 150px">DISK</th>
 			<th>UPTIME</th>
 			<th>LOAD</th>
 			<th>STATUS</th>
@@ -103,12 +107,15 @@
 					$loc=@file_get_contents("http://freeapi.ipip.net/".$value['ip']);
 					$location=json_decode($loc,true);
 					echo "<td>".$location[0].$location[1].$location[2].$location[3].$location[4]."</td>";
-					echo "<td class=\"text-success\">".$value['ram']."</td>";
-					echo "<td class=\"text-danger\">".$value['used']."</td>";
+					$persent = round( $value['used']/$value ['ram'] * 100 , 2)."%";
+					echo '<td><div class="progress">
+  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:'.$persent.';">'.$persent.'</div></div>'.$value['used'].'M/'.$value ['ram'].'M</td>';
+  echo '<td><div class="progress">
+  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:'.$value['disk'].'%;">'.$value['disk'].'%</div></div></td>';
 					echo "<td>".$value['uptime']."</td>";
 					echo "<td>".$value['aload']."</td>";
-					if ($time>$value['atime']+100) {//100s无计时，则不在线
-						echo "<td><span class=\"label label-danger\">OFFLINE</span><span class=\"text-danger\">Last:".date("Y-m-d H:i:s",$value['atime'])."</span></td>";
+					if ($time>$value['atime']+100) {//if not assert after 100s,show offline
+						echo "<td><span class=\"label label-danger\" title=\"".date("Y-m-d H:i:s",$value['atime'])."\">OFFLINE</span></td>";
 					}else{
 						echo "<td><span class=\"label label-success\">ONLINE</span></td>";
 					}

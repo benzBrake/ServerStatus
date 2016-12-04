@@ -1,6 +1,7 @@
 # ServerStatus
 ## About branch backup and master
 Branch backup is a clone of http://git.oschina.net/supercell/service_count
+
 Branch master is a modified version
 ## Screenshots
 ![table](https://ooo.0o0.ooo/2016/12/04/5843d6754e8ef.png "Information panel")
