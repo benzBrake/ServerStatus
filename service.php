@@ -1,10 +1,6 @@
-
 <?php
-	define('USER', "root");
-	define('PASS', "");
-	define('DB', "vps");
-	define('KEY', "666");
-	define('PA', "666");//如果设置了密码，只有输入密码后才能看到
+	define('BASEPATH',dirname(dirname(__FILE__)));
+	require_once("config.php");
 	$sql=mysql_connect("127.0.0.1",USER,PASS);
 	$db=mysql_select_db(DB,$sql);
 	$time=time();
@@ -36,10 +32,13 @@
 		<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
 		<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
 		<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-		<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>	
+		<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 		<style type="text/css">
 			.container{
 				margin-top: 50px;
+			}
+			#addvps {
+				margin-bottom: 10px;
 			}
 		</style>
 	</head>
@@ -80,6 +79,10 @@
 		$query=mysql_query("SELECT * FROM vps");
 ?>
 <div class="container">
+	<div id="addvps" class="input-group">
+		<span class="input-group-addon">添加服务器 $</span>
+		<input id="install_command" type="text" class="form-control" value="<?php echo 'wget -N --no-check-certificate http://'.$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"].'install.sh -O serverstatus_installer.sh && bash serverstatus_installer.sh http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].' '.KEY." && rm -f serverstatus_installer.sh"; ?>">
+	</div>
 	<table class="table table-striped">
 		<tr>
 			<th>ID</th>
@@ -118,7 +121,11 @@
 <?php
 	}
 ?>
-
-
-
+<footer>
+	<script>
+	$("#install_command").click(function(){ 
+		$(this).select();
+	});
+	</script>
+</footer>
 </html>
