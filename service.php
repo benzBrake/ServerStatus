@@ -75,6 +75,7 @@
 					</form>
 				</div>
 			</div>
+			<center>Copyright  <a href="http://git.oschina.net/supercell/service_count">Egist</a> & <a href="https://github.com/Char1sma/ServerStatus">Char1sma</a></center>
 <?php
 				return false;
 				}
@@ -129,6 +130,7 @@
 	}
 ?>
 <footer>
+	<center>Copyright  <a href="http://git.oschina.net/supercell/service_count">Egist</a> & <a href="https://github.com/Char1sma/ServerStatus">Char1sma</a></center>
 	<script>
 	$("#install_command").click(function(){ 
 		$(this).select();

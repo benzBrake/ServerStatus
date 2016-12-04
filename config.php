@@ -3,6 +3,7 @@
 	define('USER', "root");
 	define('PASS', "");
 	define('DB', "vps");
+	define('DB_HOST',"127.0.0.1");
 	define('KEY', "666");
 	define('PA', "666");//如果设置了密码，只有输入密码后才能看到
 	define('BASEPATH',dirname(dirname(__FILE__)));
