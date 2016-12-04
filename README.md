@@ -1,14 +1,19 @@
-#service_count
-![table](https://ooo.0o0.ooo/2016/12/04/5843d6754e8ef.png "界面")
-登陆后会有自动安装监控客户端的命令，复制到终端中运行就可以了。
+# ServerStatus
+# About branch backup and master
+Branch backup is a clone of http://git.oschina.net/supercell/service_count
+Branch master is a modified version
+# Screenshots
+![table](https://ooo.0o0.ooo/2016/12/04/5843d6754e8ef.png "Information panel")
 
-## service.php文件
-修改
->define('USER', "root");//数据库用户名
->define('PASS', "");//数据库密码
->define('DB', "vps");//数据库名
->define('KEY', "666");//验证KEY
->define('PA', "666");//如果设置了密码，只有输入密码才能访问
+# About install.sh
+If you logged into informaiton panel,you can find the usage of install.sh
 
-## 数据库初始化
-VPS.sql导入数据库！
+## config.php
+>define('USER', "root");//DATABASE USER
+>define('PASS', "");//DATABASE_PASS
+>define('DB', "vps");//DATABASE_NAME
+>define('KEY', "666");//POST_AUTH_KEY
+>define('PA', "666");//INFOMATION_PANEL_LOGIN_PASS
+
+## Init Database
+import `vps.sql`
