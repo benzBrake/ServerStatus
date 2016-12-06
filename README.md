@@ -17,8 +17,6 @@ Please edit `config.php`
 >
 > define('DB_PASS', "");//DATABASE_PASS
 >
-> define('DB_NAME', "vps");//DATABASE_NAME
->
 > define('DB_HOST',"127.0.0.1");//DATABASE_SEVER
 >
 > define('DB_PREFIX','ss');//DO_NOT_CHANGE_IN_CURRENT_VERSION
