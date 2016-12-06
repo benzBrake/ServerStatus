@@ -5,7 +5,7 @@
 	$db=mysql_select_db(DB_NAME,$sql);
 	$time=time();
 	if($_POST['key']&&(!$_POST['pa'])){
-		if(KEY==$_POST['key']){
+		if(POST_TOKEN==$_POST['key']){
 			$ip=trim($_SERVER['REMOTE_ADDR']);
 			$ram=$_POST['ram'];
 			$used=$_POST['used'];
@@ -50,13 +50,13 @@
 <body>
 <?php
 		session_start();
-		if(strlen(PA)){
-			if($_SESSION['pa']!=PA){
+		if(strlen(LOGIN_PASS)){
+			if($_SESSION['pa']!=LOGIN_PASS){
 				if($_POST['pa']){
-					if(($_POST['pa']!=PA)){
+					if(($_POST['pa']!=LOGIN_PASS)){
 						header("Location:".$_SERVER['SCRIPT_NAME']);
 					}else{
-						$_SESSION['pa']=PA;
+						$_SESSION['pa']=LOGIN_PASS;
 					}
 				}else{
 ?>	
@@ -86,7 +86,7 @@
 <div class="container">
 	<div id="addvps" class="input-group">
 		<span class="input-group-addon">Add Server $</span>
-		<input id="install_command" type="text" class="form-control" value="<?php echo 'wget -N --no-check-certificate http://'.$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"].'install.sh -O serverstatus_installer.sh && bash serverstatus_installer.sh http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].' '.KEY." && rm -f serverstatus_installer.sh"; ?>">
+		<input id="install_command" type="text" class="form-control" value="<?php echo 'wget -N --no-check-certificate http://'.$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"].'install.sh -O serverstatus_installer.sh && bash serverstatus_installer.sh http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].' '.POST_TOKEN." && rm -f serverstatus_installer.sh"; ?>">
 	</div>
 	<table class="table table-striped">
 		<tr>
