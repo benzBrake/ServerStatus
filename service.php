@@ -1,8 +1,8 @@
 <?php
 	define('BASEPATH',dirname(dirname(__FILE__)));
 	require_once("config.php");
-	$sql=mysql_connect(DB_HOST,USER,PASS);
-	$db=mysql_select_db(DB,$sql);
+	$sql=mysql_connect(DB_HOST,DB_USER,DB_PASS);
+	$db=mysql_select_db(DB_NAME,$sql);
 	$time=time();
 	if($_POST['key']&&(!$_POST['pa'])){
 		if(KEY==$_POST['key']){
