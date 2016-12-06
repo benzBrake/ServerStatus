@@ -3,6 +3,7 @@
 	require_once("config.php");
 	$sql=mysql_connect(DB_HOST,DB_USER,DB_PASS);
 	$db=mysql_select_db(DB_NAME,$sql);
+	$sst=DB_PREFIX."_status";
 	$time=time();
 	if($_POST['key']&&(!$_POST['pa'])){
 		if(POST_TOKEN==$_POST['key']){
@@ -12,12 +13,12 @@
 			$disk=round($_POST['disk'] * 100,0);
 			$uptime=$_POST['uptime'];
 			$load=$_POST['load'];
-			$valid=mysql_query("SELECT * FROM vps WHERE ip='".$ip."'");
+			$valid=mysql_query("SELECT * FROM $sst WHERE ip='".$ip."'");
 			$is_valid=mysql_num_rows($valid);
 			if(!$is_valid){
-				mysql_query("INSERT INTO vps(ip,ram,used,disk,uptime,aload,atime) VALUES('".$ip."','".$ram."','".$used."','".$disk."','".$uptime."','".$load."','".$time."') ");
+				mysql_query("INSERT INTO $sst(ip,ram,used,disk,uptime,aload,atime) VALUES('".$ip."','".$ram."','".$used."','".$disk."','".$uptime."','".$load."','".$time."') ");
 			}else{
-				mysql_query("UPDATE vps SET ram='".$ram."',used='".$used."',disk='".$disk."',uptime='".$uptime."',aload='".$load."',atime='".$time."' WHERE ip='".$ip."'");
+				mysql_query("UPDATE $sst SET ram='".$ram."',used='".$used."',disk='".$disk."',uptime='".$uptime."',aload='".$load."',atime='".$time."' WHERE ip='".$ip."'");
 			}
 		}else{
 			echo "error";
@@ -81,7 +82,7 @@
 				}
 			}
 		}
-		$query=mysql_query("SELECT * FROM vps");
+		$query=mysql_query("SELECT * FROM $sst");
 ?>
 <div class="container">
 	<div id="addvps" class="input-group">

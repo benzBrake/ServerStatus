@@ -5,7 +5,7 @@ SET time_zone = "+08:00";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `vps` (
+CREATE TABLE IF NOT EXISTS `ss_status` (
   `id` int(11) NOT NULL,
   `ip` varchar(128) NOT NULL,
   `ram` varchar(128) NOT NULL,
@@ -15,9 +15,9 @@ CREATE TABLE IF NOT EXISTS `vps` (
   `aload` varchar(128) NOT NULL,
   `atime` int(11) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
-INSERT INTO `vps` (`id`, `ip`, `ram`, `used`, `disk` ,`uptime`, `aload`, `atime`) VALUES
+INSERT INTO `ss_status` (`id`, `ip`, `ram`, `used`, `disk` ,`uptime`, `aload`, `atime`) VALUES
 (1, '12.12.5.10', '512', '265', 11,' 1 days, 20 hours, 32minutes.', ' 0.01', 1480463986);
-ALTER TABLE `vps`
+ALTER TABLE `ss_status`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -25,9 +25,9 @@ ALTER TABLE `vps`
 --
 
 --
--- AUTO_INCREMENT for table `vps`
+-- AUTO_INCREMENT for table `ss_status`
 --
-ALTER TABLE `vps`
+ALTER TABLE `ss_status`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
