@@ -9,16 +9,16 @@
 		if(POST_TOKEN==$_POST['key']){
 			$ip=trim($_SERVER['REMOTE_ADDR']);
 			$ram=$_POST['ram'];
-			$used=$_POST['used'];
+			$ram_used=$_POST['ram_used'];
 			$disk=round($_POST['disk'] * 100,0);
 			$uptime=$_POST['uptime'];
 			$load=$_POST['load'];
 			$valid=mysql_query("SELECT * FROM $sst WHERE ip='".$ip."'");
 			$is_valid=mysql_num_rows($valid);
 			if(!$is_valid){
-				mysql_query("INSERT INTO $sst(ip,ram,used,disk,uptime,aload,atime) VALUES('".$ip."','".$ram."','".$used."','".$disk."','".$uptime."','".$load."','".$time."') ");
+				mysql_query("INSERT INTO $sst(ip,ram,ram_used,disk,uptime,aload,atime) VALUES('".$ip."','".$ram."','".$ram_used."','".$disk."','".$uptime."','".$load."','".$time."') ");
 			}else{
-				mysql_query("UPDATE $sst SET ram='".$ram."',used='".$used."',disk='".$disk."',uptime='".$uptime."',aload='".$load."',atime='".$time."' WHERE ip='".$ip."'");
+				mysql_query("UPDATE $sst SET ram='".$ram."',ram_used='".$ram_used."',disk='".$disk."',uptime='".$uptime."',aload='".$load."',atime='".$time."' WHERE ip='".$ip."'");
 			}
 		}else{
 			echo "error";
@@ -109,9 +109,9 @@
 					$loc=@file_get_contents("http://freeapi.ipip.net/".$value['ip']);
 					$location=json_decode($loc,true);
 					echo "<td>".$location[0].$location[1].$location[2].$location[3].$location[4]."</td>";
-					$persent = round( $value['used']/$value ['ram'] * 100 , 2)."%";
+					$persent = round( $value['ram_used']/$value ['ram'] * 100 , 2)."%";
 					echo '<td><div class="progress">
-  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:'.$persent.';">'.$persent.'</div></div>'.$value['used'].'M/'.$value ['ram'].'M</td>';
+  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:'.$persent.';">'.$persent.'</div></div>'.$value['ram_used'].'M/'.$value ['ram'].'M</td>';
   echo '<td><div class="progress">
   <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:'.$value['disk'].'%;">'.$value['disk'].'%</div></div></td>';
 					echo "<td>".$value['uptime']."</td>";
