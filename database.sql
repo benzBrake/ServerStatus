@@ -7,6 +7,7 @@ SET time_zone = "+08:00";
 /*!40101 SET NAMES utf8 */;
 CREATE TABLE IF NOT EXISTS `ss_status` (
   `id` int(11) NOT NULL,
+  `hostname` varchar(128) NOT NULL,
   `ip` varchar(128) NOT NULL,
   `ram` varchar(128) NOT NULL,
   `ram_used` varchar(128) NOT NULL,
@@ -23,8 +24,8 @@ CREATE TABLE IF NOT EXISTS `ss_location` (
 	`city` varchar(64),
 	`isp` varchar(128)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO `ss_status` (`id`, `ip`, `ram`, `ram_used`, `disk` ,`uptime`, `aload`, `atime`) VALUES
-(1, '12.12.5.10', '512', '265', 11,' 1 days, 20 hours, 32minutes.', ' 0.01', 1480463986);
+INSERT INTO `ss_status` (`id`, `hostname`, `ip`, `ram`, `ram_used`, `disk` ,`uptime`, `aload`, `atime`) VALUES
+(1, 'ATT.USA', '12.12.5.10', '512', '265', 11,' 1 days, 20 hours, 32minutes.', ' 0.01', 1480463986);
 ALTER TABLE `ss_status`
   ADD PRIMARY KEY (`id`);
 ALTER TABLE `ss_location`

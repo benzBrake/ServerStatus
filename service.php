@@ -8,6 +8,7 @@
 	if($_POST['key']&&(!$_POST['pa'])){
 		if(POST_TOKEN==$_POST['key']){
 			$ip=trim($_SERVER['REMOTE_ADDR']);
+			$hostname=$_POST['hostname'];
 			$ram=$_POST['ram'];
 			$ram_used=$_POST['ram_used'];
 			$disk=round($_POST['disk'] * 100,0);
@@ -16,9 +17,9 @@
 			$valid=mysql_query("SELECT * FROM $sst WHERE ip='".$ip."'");
 			$is_valid=mysql_num_rows($valid);
 			if(!$is_valid){
-				mysql_query("INSERT INTO $sst(ip,ram,ram_used,disk,uptime,aload,atime) VALUES('".$ip."','".$ram."','".$ram_used."','".$disk."','".$uptime."','".$load."','".$time."') ");
+				mysql_query("INSERT INTO $sst(hostname,ip,ram,ram_used,disk,uptime,aload,atime) VALUES('".$hostname."','".$ip."','".$ram."','".$ram_used."','".$disk."','".$uptime."','".$load."','".$time."') ");
 			}else{
-				mysql_query("UPDATE $sst SET ram='".$ram."',ram_used='".$ram_used."',disk='".$disk."',uptime='".$uptime."',aload='".$load."',atime='".$time."' WHERE ip='".$ip."'");
+				mysql_query("UPDATE $sst SET hostname='".$hostname."',ram='".$ram."',ram_used='".$ram_used."',disk='".$disk."',uptime='".$uptime."',aload='".$load."',atime='".$time."' WHERE ip='".$ip."'");
 			}
 		}else{
 			echo "error";
@@ -132,7 +133,7 @@
 		while($value=mysql_fetch_array($query)){
 			echo "<tr id=\"r1\" data-toggle=\"collapse\" data-target=\"#rt".$value['id']."\" class=\"accordion-toggle odd\">";
 			echo "<td>".$value['id']."</td>";
-			echo "<td>".$value['ip']."</td>";
+			echo "<td>".$value['hostname']."</td>";
 			$persent = round( $value['ram_used']/$value ['ram'] * 100 , 2)."%";
 			echo '<td><div class="progress">
   <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:'.$persent.';">'.$persent.'</div></div></td>';
