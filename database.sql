@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `ss_status` (
   `ip` varchar(128) NOT NULL,
   `ram` varchar(128) NOT NULL,
   `ram_used` varchar(128) NOT NULL,
-  `disk` int(8) NOT NULL,
+  `disk` varchar(128) NOT NULL,
   `uptime` varchar(128) NOT NULL,
   `aload` varchar(128) NOT NULL,
   `atime` int(11) NOT NULL
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `ss_location` (
 	`isp` varchar(128)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 INSERT INTO `ss_status` (`id`, `hostname`, `ip`, `ram`, `ram_used`, `disk` ,`uptime`, `aload`, `atime`) VALUES
-(1, 'ATT.USA', '12.12.5.10', '512', '265', 11,' 1 days, 20 hours, 32minutes.', ' 0.01', 1480463986);
+(1, 'ATT.USA', '12.12.5.10', '512', '265', '1100|8976',' 1 days, 20 hours, 32minutes.', ' 0.01', 1480463986);
 ALTER TABLE `ss_status`
   ADD PRIMARY KEY (`id`);
 ALTER TABLE `ss_location`

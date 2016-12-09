@@ -11,7 +11,7 @@
 			$hostname=$_POST['hostname'];
 			$ram=$_POST['ram'];
 			$ram_used=$_POST['ram_used'];
-			$disk=round($_POST['disk'] * 100,0);
+			$disk=$_POST['disk'];
 			$uptime=$_POST['uptime'];
 			$load=$_POST['load'];
 			$valid=mysql_query("SELECT * FROM $sst WHERE ip='".$ip."'");
@@ -137,11 +137,14 @@
 			echo "<tr id=\"r1\" data-toggle=\"collapse\" data-target=\"#rt".$value['id']."\" class=\"accordion-toggle odd\">";
 			echo "<td>".$value['id']."</td>";
 			echo "<td>".$value['hostname']."</td>";
-			$persent = round( $value['ram_used']/$value ['ram'] * 100 , 2)."%";
+			$persent=round( $value['ram_used']/$value ['ram'] * 100 , 2)."%";
 			echo '<td><div class="progress">
   <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:'.$persent.';">'.$persent.'</div></div></td>';
-  			echo '<td><div class="progress">
-  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:'.$value['disk'].'%;">'.$value['disk'].'%</div></div></td>';
+  			$disk_used=explode('|',$value['disk'])[0];
+			$disk=explode('|',$value['disk'])[1];
+			$persent = round( $disk_used/$disk * 100 , 2)."%";
+			echo '<td><div class="progress">
+  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:'.$persent.';">'.$persent.'</div></div></td>';
 			echo "<td>".$value['uptime']."</td>";
 			echo "<td>".$value['aload']."</td>";
 			if ($time>$value['atime']+100) {//if not assert after 100s,show offline
@@ -168,6 +171,7 @@
 				
 			}
 			echo "<div id=\"expand_ram\">RAM:".$value['ram_used']."M/".$value['ram']."M</div>";
+			echo "<div id=\"expand_disk\">DISK:".$disk_used."M/".$disk."M</div>";
 			echo '<div id="expand_custom"></div></div></td></tr>';
 		}
 ?>
