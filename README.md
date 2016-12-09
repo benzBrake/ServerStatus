@@ -6,7 +6,7 @@ Branch backup is a clone of http://git.oschina.net/supercell/service_count
 
 Branch master is a modified version
 ## Screenshots
-![table](https://ooo.0o0.ooo/2016/12/04/584412d73c5e0.png "Information panel")
+![table](https://ooo.0o0.ooo/2016/12/09/584a6be5a300b.png "Information panel")
 
 ## About install.sh
 If you logged into informaiton panel, you can find the usage of install.sh
