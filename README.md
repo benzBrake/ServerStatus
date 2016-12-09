@@ -26,6 +26,9 @@ Please edit `config.php`
 > define('POST_TOKEN', "666");//POST_AUTH_KEY
 >
 > define('LOGIN_PASS', "666");//INFOMATION_PANEL_LOGIN_PASS
-
+>
+> define('IP_TOKEN', '');//LEAVE_BLANK_TO_ALLOW_ALL_PERSONT_TO_USE_IP_WHOIS_API
+>
+> define('DISPLAY_IP',TRUE);//HIDE_IP_TO_AVOID_DDOS_ATTACK
 ## How to init database?
-import `vps.sql`
+import `database.sql`
