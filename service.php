@@ -28,29 +28,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>探针集合</title>
+	<title>ServerStatus</title>
 	<head>
 		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
 		<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
-		<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-		<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-		<style type="text/css">
-			.container{
-				margin-top: 50px;
-			}
-			#addvps {
-				margin-bottom: 10px;
-			}
-			.progress-bar {
-				color:#000;
+		<link rel="stylesheet" href="https://tz.cloudcpp.com/css/dark.css" title="dark">
+		<link rel="stylesheet" href="https://tz.cloudcpp.com/css/light.css" title="light">
+		<style>
+			body {
+				padding-top: 70px;
+				padding-bottom: 30px;
 			}
 		</style>
+		<!--[if lt IE 9]>
+			<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+		<![endif]-->
 	</head>
 </head>
 <body>
+	<div role="navigation" class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<div class="navbar-header">
+					<button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a href="#" class="navbar-brand">ServerStatus</a>
+				</div>
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li class="dropdown">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#">Theme<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="#" onclick="setActiveStyleSheet('dark')">Dark</a></li>
+								<li><a href="#" onclick="setActiveStyleSheet('light')">Light</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div><!--/.nav-collapse -->
+			</div>
+		</div>
+	</div>
 <?php
-		session_start();
 		if(strlen(LOGIN_PASS)){
 			if($_SESSION['pa']!=LOGIN_PASS){
 				if($_POST['pa']){
@@ -60,17 +86,17 @@
 						$_SESSION['pa']=LOGIN_PASS;
 					}
 				}else{
-?>	
+?>
 			<div class="container">
 				<div class="col-md-4 col-offset-4">
 					<div class="row">
-						<h2>密码</h2>
+						<h2>Password:</h2>
 					</div>
 					<form action="" method="post">
 						<div class="input-group">
 							<input type="password" name="pa" class="form-control">
 							<span class="input-group-btn">
-								<input type="submit" name="提交" class="btn btn-success">
+								<input type="submit" name="OK" class="btn btn-success">
 							</span>
 						</div>
 					</form>
@@ -86,43 +112,60 @@
 ?>
 <div class="container">
 	<div id="addvps" class="input-group">
-		<span class="input-group-addon">Add Server $</span>
+		<span class="input-group-addon">Add Server #</span>
 		<input id="install_command" type="text" class="form-control" value="<?php echo 'wget -N --no-check-certificate http://'.$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"].'install.sh -O serverstatus_installer.sh && bash serverstatus_installer.sh http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].' '.POST_TOKEN." && rm -f serverstatus_installer.sh"; ?>">
 	</div>
-	<table class="table table-striped">
+	<div class="container content">
+	<table class="table table-striped table-condensed table-hover">
+		<thead>
 		<tr>
-			<th>ID</th>
-			<th>IP</th>
-			<th>LOCATION</th>
-			<th style="min-width: 150px">MEMORY</th>
-			<th style="min-width: 150px">DISK</th>
+			<th id="id">ID</th>
+			<th id="hostname">HOSTNAME</th>
+			<th>RAM</th>
+			<th>DISK</th>
 			<th>UPTIME</th>
 			<th>LOAD</th>
 			<th>STATUS</th>
 		</tr>
+		</thead>
 <?php
-			while($value=mysql_fetch_array($query)){
-				echo "<tr>";
-					echo "<td>".$value['id']."</td>";
-					echo "<td>".$value['ip']."</td>";
-					ini_set('user_agent','Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 2.0.50727; .NET CLR 3.0.04506.30; GreenBrowser)');
-					$loc=@file_get_contents("http://freeapi.ipip.net/".$value['ip']);
-					$location=json_decode($loc,true);
-					echo "<td>".$location[0].$location[1].$location[2].$location[3].$location[4]."</td>";
-					$persent = round( $value['ram_used']/$value ['ram'] * 100 , 2)."%";
-					echo '<td><div class="progress">
-  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:'.$persent.';">'.$persent.'</div></div>'.$value['ram_used'].'M/'.$value ['ram'].'M</td>';
-  echo '<td><div class="progress">
+		while($value=mysql_fetch_array($query)){
+			echo "<tr id=\"r1\" data-toggle=\"collapse\" data-target=\"#rt".$value['id']."\" class=\"accordion-toggle odd\">";
+			echo "<td>".$value['id']."</td>";
+			echo "<td>".$value['ip']."</td>";
+			$persent = round( $value['ram_used']/$value ['ram'] * 100 , 2)."%";
+			echo '<td><div class="progress">
+  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:'.$persent.';">'.$persent.'</div></div></td>';
+  			echo '<td><div class="progress">
   <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:'.$value['disk'].'%;">'.$value['disk'].'%</div></div></td>';
-					echo "<td>".$value['uptime']."</td>";
-					echo "<td>".$value['aload']."</td>";
-					if ($time>$value['atime']+100) {//if not assert after 100s,show offline
-						echo "<td><span class=\"label label-danger\" title=\"".date("Y-m-d H:i:s",$value['atime'])."\">OFFLINE</span></td>";
-					}else{
-						echo "<td><span class=\"label label-success\">ONLINE</span></td>";
-					}
-				echo "</tr>";
+			echo "<td>".$value['uptime']."</td>";
+			echo "<td>".$value['aload']."</td>";
+			if ($time>$value['atime']+100) {//if not assert after 100s,show offline
+				echo "<td><span class=\"label label-danger\" title=\"".date("Y-m-d H:i:s",$value['atime'])."\">OFFLINE</span></td>";
+			}else{
+				echo "<td><span class=\"label label-success\">ONLINE</span></td>";
 			}
+			echo "</tr>";
+			echo '<tr class="expandRow even"><td colspan="12">';
+			echo "<div class=\"accordian-body collapse\" id=\"rt".$value['id']."\">";
+			if (DISPLAY_IP) {
+				$result="";
+				if (IP_TOKEN!="") {
+					$result=@file_get_contents('http://'.$_SERVER['HTTP_HOST']."/ip.php?token=".IP_TOKEN."&ip=".$value['ip']);
+				} else {
+					$result=@file_get_contents('http://'.$_SERVER['HTTP_HOST']."/ip.php?ip=".$value['ip']);
+				}
+				if (strpos(strtolower($result),"error")=== false) {
+					$location=json_decode($result,true);
+					echo "<div id=\"expand_ip\">IP:".$value['ip']." - ".$location[0].$location[1].$location[2]." ".$location[3]."</div>";
+				} else {
+					echo "<div id=\"expand_ip\">IP:".$value['ip']." - $result</div>";
+				}
+				
+			}
+			echo "<div id=\"expand_ram\">RAM:".$value['ram_used']."M/".$value['ram']."M</div>";
+			echo '<div id="expand_custom"></div></div></td></tr>';
+		}
 ?>
 	</table>
 </div>
@@ -132,10 +175,70 @@
 ?>
 <footer>
 	<center>Copyright  <a href="http://git.oschina.net/supercell/service_count">Egist</a> & <a href="https://github.com/Char1sma/ServerStatus">Char1sma</a></center>
+	<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+	<script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 	<script>
 	$("#install_command").click(function(){ 
 		$(this).select();
 	});
+	function setActiveStyleSheet(title) {
+		var i, a, main;
+		for(i=0; (a = document.getElementsByTagName("link")[i]); i++) {
+			if(a.getAttribute("rel").indexOf("style") != -1 && a.getAttribute("title")) {
+				a.disabled = true;
+				if(a.getAttribute("title") == title) a.disabled = false;
+			}
+		}
+	}
+	function getActiveStyleSheet() {
+		var i, a;
+		for(i=0; (a = document.getElementsByTagName("link")[i]); i++) {
+			if(a.getAttribute("rel").indexOf("style") != -1 && a.getAttribute("title") && !a.disabled)
+				return a.getAttribute("title");
+		}
+		return null;
+	}
+	function getPreferredStyleSheet() {
+		var i, a;
+		for(i=0; (a = document.getElementsByTagName("link")[i]); i++) {
+			if(a.getAttribute("rel").indexOf("style") != -1	&& a.getAttribute("rel").indexOf("alt") == -1 && a.getAttribute("title"))
+				return a.getAttribute("title");
+		}
+	return null;
+	}
+	function createCookie(name,value,days) {
+		if (days) {
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = "; expires="+date.toGMTString();
+		}
+		else expires = "";
+		document.cookie = name+"="+value+expires+"; path=/";
+	}
+	function readCookie(name) {
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(';');
+		for(var i=0;i < ca.length;i++) {
+			var c = ca[i];
+			while (c.charAt(0)==' ')
+				c = c.substring(1,c.length);
+			if (c.indexOf(nameEQ) == 0)
+				return c.substring(nameEQ.length,c.length);
+		}
+		return null;
+	}
+	window.onload = function(e) {
+		var cookie = readCookie("style");
+		var title = cookie ? cookie : getPreferredStyleSheet();
+		setActiveStyleSheet(title);
+	}
+	window.onunload = function(e) {
+		var title = getActiveStyleSheet();
+		createCookie("style", title, 365);
+	}
+	var cookie = readCookie("style");
+	var title = cookie ? cookie : getPreferredStyleSheet();
+	setActiveStyleSheet(title);
 	</script>
 </footer>
 </html>
