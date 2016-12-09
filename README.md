@@ -1,4 +1,6 @@
 # ServerStatus
+Server Status website script, displays uptime (days), free RAM, free HDD.
+
 ## About branch backup and master
 Branch backup is a clone of http://git.oschina.net/supercell/service_count
 
@@ -30,5 +32,9 @@ Please edit `config.php`
 > define('IP_TOKEN', '');//LEAVE_BLANK_TO_ALLOW_ALL_PERSONT_TO_USE_IP_WHOIS_API
 >
 > define('DISPLAY_IP',TRUE);//HIDE_IP_TO_AVOID_DDOS_ATTACK
+
 ## How to init database?
 import `database.sql`
+
+## About IP Whois
+The normal ip whois api print chinese result. If you want to show in your mother touge, please edit `ip.php` and add custom api;
