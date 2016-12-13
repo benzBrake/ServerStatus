@@ -38,3 +38,9 @@ import `database.sql`
 
 ## About IP Whois
 The normal ip whois api print chinese result. If you want to show in your mother touge, please edit `ip.php` and add custom api;
+
+## Credits
+Thanks the [BotoX/ServerStatus](https://github.com/BotoX/ServerStatus "BotoX/ServerStatus") project for some of the code which has been used in this project.
+
+
+
