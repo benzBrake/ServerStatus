@@ -129,7 +129,7 @@ RAM=`free -m | grep Mem | awk '{print $2}'`
 USED=`free -m | grep Mem | awk '{print $3}'`
 HST=`hostname`
 #UPTIME=`uptime | awk '{print $3,$4,$5}' | sed 's/,$//'| tr ' ' ','`
-UPTIME=`uptime | awk -F'( |,|:)+' '{if ($9 == "min") {print $6,$7",","0 hours,",$8,"minutes."} else {print $6,$7",",$8,"hours,",$9,"minutes."}}' | tr -d '\n' | xxd -plain | sed 's/\(..\)/%\1/g'`
+UPTIME=`uptime | awk -F'( |,|:)+' '{if ($9 == "min") {print $6,$7",","0 hours,",$8,"minutes."} else if ($9 =="user" || $9 =="users") { print "0 day,",$6,"hours,",$7,"minutes." } else {print $6,$7",",$8,"hours,",$9,"minutes."}}' | tr -d '\n' | xxd -plain | sed 's/\(..\)/%\1/g'`
 DISK=`df -Hm | grep -vE '^Filesystem|tmpfs|cdrom|none' | awk 'BEGIN{TOTAL=0;USED=0}{TOTAL=TOTAL + $2;USED=USED + $3}END{print USED"|"TOTAL}' | tr -d '\n' | xxd -plain | sed 's/\(..\)/%\1/g'`
 curl -s -d "key="$TOKEN"&hostname="$HST"&load="$LOAD"&ram="$RAM"&ram_used="$USED"&disk="$DISK"&uptime="$UPTIME"" $POST_URL > /dev/null
 EOF
