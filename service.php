@@ -127,14 +127,17 @@
 			<th id="hostname">HOSTNAME</th>
 			<th>RAM</th>
 			<th>DISK</th>
-			<th>UPTIME</th>
 			<th>LOAD</th>
-			<th>STATUS</th>
+			<th colspan="2">STATUS</th>
 		</tr>
 		</thead>
 <?php
 		while($value=mysql_fetch_array($query)){
-			echo "<tr id=\"r1\" data-toggle=\"collapse\" data-target=\"#rt".$value['id']."\" class=\"accordion-toggle odd\">";
+			if ($time>$value['atime']+100) {
+				echo "<tr id=\"r1\" data-toggle=\"collapse\" data-target=\"#rt".$value['id']."\" class=\"accordion-toggle odd danger\">";
+			} else {
+				echo "<tr id=\"r1\" data-toggle=\"collapse\" data-target=\"#rt".$value['id']."\" class=\"accordion-toggle odd success\">";
+			}
 			echo "<td>".$value['id']."</td>";
 			echo "<td>".$value['hostname']."</td>";
 			$persent=round( $value['ram_used']/$value ['ram'] * 100 , 2)."%";
@@ -145,12 +148,13 @@
 			$persent = round( $disk_used/$disk * 100 , 2)."%";
 			echo '<td><div class="progress">
   <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:'.$persent.';">'.$persent.'</div></div></td>';
-			echo "<td>".$value['uptime']."</td>";
 			echo "<td>".$value['aload']."</td>";
 			if ($time>$value['atime']+100) {//if not assert after 100s,show offline
-				echo "<td><span class=\"label label-danger\" title=\"".date("Y-m-d H:i:s",$value['atime'])."\">OFFLINE</span></td>";
+				echo "<td><span class=\"label label-danger\" title=\"Last:".date("Y-m-d H:i:s",$value['atime'])."\">OFFLINE</span></td>";
+				echo "<td>Last respond: ".date("Y-m-d H:i:s",$value['atime'])."</td>";
 			}else{
 				echo "<td><span class=\"label label-success\">ONLINE</span></td>";
+				echo "<td>UPTIME: ".$value['uptime']."</td>";
 			}
 			echo "</tr>";
 			echo '<tr class="expandRow even"><td colspan="12">';
